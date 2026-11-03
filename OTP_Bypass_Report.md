@@ -2,12 +2,10 @@
 
 ## 1. Vulnerability Overview
 
-- **Vulnerability Title:** OTP Verification Bypass via HTTP Response Manipulation Leading to Account Takeover
 - **Affected Asset:** https://taskbear.com.au/
 - **Affected Functionality:** Email OTP Verification (Sign-Up / Account Verification Flow)
 - **Severity:** Critical
 - **CVSS 3.1 Score:** 9.1 (Critical)
-- **Authentication Required:** No (pre-authentication flow)
 
 The OTP verification mechanism on the email sign-up flow of https://taskbear.com.au/ relies on the HTTP response returned by the server, rather than server-side session state, to decide whether verification succeeded. By intercepting the verification request with a proxy and manually changing the response status code from `401 Unauthorized` to `200 OK` (with the body replaced to match a legitimate success response), the application accepted the forged response and marked the account as verified — without the correct OTP ever being submitted. This allows an attacker to bypass email verification for any account and, if the same OTP logic is reused elsewhere, may extend to full account takeover.
 
